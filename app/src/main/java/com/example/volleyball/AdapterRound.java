@@ -30,8 +30,8 @@ class AdapterRound extends RecyclerView.Adapter<AdapterRound.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Round round = list.get(position);
 
-        holder.n.setText(round.n);
-        holder.time.setText(round.time);
+        holder.n.setText(round.n + "");
+        holder.time.setText(round.time + "");
         holder.team1.setText(round.team1 ? "X" : "");
         holder.team2.setText(round.team2 ? "X" : "");
     }

@@ -3,6 +3,7 @@ package com.example.volleyball;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -76,15 +77,13 @@ public class ResultGameFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_result_game, container, false);
 
         recyclerView = view.findViewById(R.id.recycler_round);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
         adapter = new AdapterRound(list);
         recyclerView.setAdapter(adapter);
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        adapter.notifyDataSetChanged();
     }
 }
