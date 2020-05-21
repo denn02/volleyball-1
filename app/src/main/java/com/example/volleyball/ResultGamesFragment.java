@@ -3,8 +3,10 @@ package com.example.volleyball;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,7 +16,7 @@ import android.view.ViewGroup;
  * Use the {@link ResultGamesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ResultGamesFragment extends Fragment {
+public class ResultGamesFragment extends Fragment implements View.OnTouchListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,6 +61,18 @@ public class ResultGamesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_result_games, container, false);
+        View v = inflater.inflate(R.layout.fragment_result_games, container, false);
+        v.setOnTouchListener(this);
+
+        return v;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
+            Navigation.findNavController(v).navigate(R.id.gamesToGame);
+        }
+
+        return true;
     }
 }
