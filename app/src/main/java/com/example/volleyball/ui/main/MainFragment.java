@@ -30,8 +30,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.main_fragment, container, false);
-        Button b = v.findViewById(R.id.btnStart);
-        b.setOnClickListener(this);
+        Button rsls = v.findViewById(R.id.btnResults);
+        Button str = v.findViewById(R.id.btnStart);
+        str.setOnClickListener(this);
+        rsls.setOnClickListener(this);
         return v;
     }
 
@@ -44,6 +46,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Navigation.findNavController(v).navigate(R.id.mainToMatch);
+        switch (v.getId()) {
+            case R.id.btnResults:
+                Navigation.findNavController(v).navigate(R.id.mainToResultGames);
+                break;
+            case R.id.btnStart:
+                Navigation.findNavController(v).navigate(R.id.mainToMatch);
+        }
     }
 }
