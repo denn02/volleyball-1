@@ -3,10 +3,15 @@ package com.example.volleyball;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 
 /**
@@ -24,8 +29,17 @@ public class ResultGameFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private ArrayList<Round> list;
+    private RecyclerView recyclerView;
+    private AdapterRound adapter;
+
     public ResultGameFragment() {
         // Required empty public constructor
+
+        list = new ArrayList<>();
+        list.add(new Round(1, 1590077643, false, true));
+        list.add(new Round(2, 1590077700, true, false));
+        list.add(new Round(3, 1590077750, false, true));
     }
 
     /**
@@ -59,6 +73,17 @@ public class ResultGameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_result_game, container, false);
+        Log.d("list", "" + list.size());
+        View view = inflater.inflate(R.layout.fragment_result_game, container, false);
+
+        recyclerView = view.findViewById(R.id.recycler_round);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new AdapterRound(list);
+        recyclerView.setAdapter(adapter);
+
+        return view;
     }
 }
