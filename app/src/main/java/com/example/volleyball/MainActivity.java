@@ -2,7 +2,6 @@ package com.example.volleyball;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.example.volleyball.ui.main.MainFragment;
