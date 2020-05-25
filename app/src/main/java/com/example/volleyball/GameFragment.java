@@ -26,6 +26,8 @@ public class GameFragment extends Fragment implements View.OnTouchListener {
     private String mParam1;
     private String mParam2;
 
+    Match match;
+
     public GameFragment() {
         // Required empty public constructor
     }
@@ -61,19 +63,31 @@ public class GameFragment extends Fragment implements View.OnTouchListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_game, container, false);
-        v.setOnTouchListener(this);
+        float density = getResources().getDisplayMetrics().density;
+        match = new Match(getContext(), container.getWidth(), container.getHeight(), density);
 
-        return v;
+        return match;
     }
 
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
-            Navigation.findNavController(v).navigate(R.id.matchToGame);
+//            Navigation.findNavController(v).navigate(R.id.matchToGame);
         }
 
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        match.resume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        match.pause();
     }
 }
