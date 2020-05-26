@@ -5,9 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.animation.ScaleAnimation;
+import android.widget.Switch;
 
 class Match extends SurfaceView implements Runnable {
 
@@ -36,6 +38,10 @@ class Match extends SurfaceView implements Runnable {
     private Area leftArea;
     private Area rightArea;
 
+    private int leftScore;
+    private int rightScore;
+    private boolean selectedWho = false;
+
     Match(Context context, int width, int height, float density) {
         super(context);
         
@@ -63,6 +69,8 @@ class Match extends SurfaceView implements Runnable {
     }
 
     private void startGame() {
+        leftScore = 0;
+        rightScore = 0;
         paused = false;
         gameOver = false;
         startTime = System.currentTimeMillis();
@@ -103,6 +111,8 @@ class Match extends SurfaceView implements Runnable {
             paint.setTextSize(fontSize);
             canvas.drawText("FPS: " + fps, fontMargin, fontSize + fontMargin, paint);
 
+            canvas.drawText("" + leftScore + " : " + rightScore, fontMargin, fontSize * 2 + fontMargin * 2, paint);
+
             holder.unlockCanvasAndPost(canvas);
         }
 
@@ -121,5 +131,28 @@ class Match extends SurfaceView implements Runnable {
         playing = true;
         thread = new Thread(this);
         thread.start();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch(event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_UP:
+                if (selectedWho) {
+                    leftArea.setSelected(false);
+                    rightArea.setSelected(false);
+                    selectedWho = false;
+                } else {
+                    if (leftArea.getRect().contains(event.getX(), event.getY())) {
+                        selectedWho = true;
+                        leftArea.setSelected(true);
+                    } else if (rightArea.getRect().contains(event.getX(), event.getY())) {
+                        selectedWho = true;
+                        rightArea.setSelected(true);
+                    }
+                }
+
+                break;
+        }
+        return true;
     }
 }
