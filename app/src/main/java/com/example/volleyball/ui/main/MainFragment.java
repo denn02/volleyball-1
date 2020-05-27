@@ -15,18 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
-import com.example.volleyball.GameFragment;
 import com.example.volleyball.R;
 
 public class MainFragment extends Fragment implements View.OnClickListener {
 
     private MainViewModel mViewModel;
-    View view;
-    final EditText team1 = (EditText) view.findViewById(R.id.EditTextTeam1);
-    final EditText team2 = (EditText) view.findViewById(R.id.EditTextTeam2);
-
     public static MainFragment newInstance() {
         return new MainFragment();
     }
@@ -52,8 +46,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-/*  any huita, 
-*   try to put in GameFragment, 
+/*  any huita,
+*   try to put in GameFragment,
 *   but i don't know how put it in SurfaceView
 */
 

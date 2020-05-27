@@ -32,6 +32,7 @@
                 android:backgroundTint="#E6716B6B"
                 android:gravity="center_horizontal"
                 android:hint="@string/team_1"
+                android:backgroundTintMode="screen"
                 android:textAlignment="center" />
 
             <com.google.android.material.textfield.TextInputEditText
