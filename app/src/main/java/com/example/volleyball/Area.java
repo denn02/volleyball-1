@@ -33,4 +33,8 @@ class Area {
     void setSelected(boolean value) {
         selected = value;
     }
+
+    public boolean isSelected() {
+        return selected;
+    }
 }

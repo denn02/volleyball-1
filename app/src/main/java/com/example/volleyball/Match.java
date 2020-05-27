@@ -42,6 +42,14 @@ class Match extends SurfaceView implements Runnable {
     private int rightScore;
     private boolean selectedWho = false;
 
+    private Ball ball;
+    private float startBallX;
+    private float startBallY;
+
+    private float buttonSize;
+    private float buttonMargin;
+    private Button btnCommit;
+
     Match(Context context, int width, int height, float density) {
         super(context);
         
@@ -64,6 +72,18 @@ class Match extends SurfaceView implements Runnable {
         RectF rectRight = new RectF(halfW, rectLeft.top, halfW + 3 * blockSize, rectLeft.bottom);
         leftArea = new Area(rectLeft, Area.LEFT, density);
         rightArea = new Area(rectRight, Area.RIGHT, density);
+
+        startBallX = width / 2;
+        startBallY = height / 2;
+        ball = new Ball(getContext(), density);
+
+        buttonSize = 40 * density;
+        buttonMargin = 10 * density;
+        float startButtonX = width - buttonSize - buttonMargin;
+        float startButtonY = buttonMargin;
+        RectF rect = new RectF(startButtonX, startButtonY, startButtonX + buttonSize, startButtonY + buttonSize);
+        btnCommit = new Button(getContext(), rect);
+
 
         startGame();
     }
@@ -108,10 +128,17 @@ class Match extends SurfaceView implements Runnable {
             leftArea.draw(canvas, paintArea);
             rightArea.draw(canvas, paintArea);
 
+            if (selectedWho) {
+                ball.draw(canvas, paint);
+                btnCommit.draw(canvas, paint);
+            }
+
             paint.setTextSize(fontSize);
             canvas.drawText("FPS: " + fps, fontMargin, fontSize + fontMargin, paint);
 
             canvas.drawText("" + leftScore + " : " + rightScore, fontMargin, fontSize * 2 + fontMargin * 2, paint);
+
+
 
             holder.unlockCanvasAndPost(canvas);
         }
@@ -137,22 +164,39 @@ class Match extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent event) {
         switch(event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
-                if (selectedWho) {
-                    leftArea.setSelected(false);
-                    rightArea.setSelected(false);
-                    selectedWho = false;
+                if (btnCommit.getRect().contains(event.getX(), event.getY())) {
+                    commit();
+                } else if (selectedWho) {
+                    ball.setPosition(event.getX(), event.getY());
                 } else {
                     if (leftArea.getRect().contains(event.getX(), event.getY())) {
                         selectedWho = true;
                         leftArea.setSelected(true);
+                        resetBallPosition();
                     } else if (rightArea.getRect().contains(event.getX(), event.getY())) {
                         selectedWho = true;
                         rightArea.setSelected(true);
+                        resetBallPosition();
                     }
                 }
 
                 break;
         }
         return true;
+    }
+
+    private void commit() {
+        if (leftArea.isSelected()) {
+            leftScore++;
+        } else {
+            rightScore++;
+        }
+        leftArea.setSelected(false);
+        rightArea.setSelected(false);
+        selectedWho = false;
+    }
+
+    private void resetBallPosition() {
+        ball.setPosition(startBallX, startBallY);
     }
 }
