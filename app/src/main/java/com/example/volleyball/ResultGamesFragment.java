@@ -76,7 +76,7 @@ public class ResultGamesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_result_games, container, false);
-        recyclerView = v.findViewById(R.id.recycler_roundS);
+        recyclerView = v.findViewById(R.id.recycler_roundG);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);

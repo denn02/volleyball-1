@@ -13,7 +13,7 @@ import java.util.List;
 
 class AdapterGameInfo extends RecyclerView.Adapter<AdapterGameInfo.ViewHolder> {
 
-    private List<GameInfo> list;
+    private ArrayList<GameInfo> list;
 
     public AdapterGameInfo(ArrayList<GameInfo> list) {
         this.list = list;
