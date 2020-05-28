@@ -1,12 +1,23 @@
 package com.example.volleyball;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 /**
@@ -23,9 +34,15 @@ public class ResultGamesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ArrayList<GameInfo> listage;
+    private RecyclerView recyclerView;
+    private AdapterGameInfo adapter;
 
     public ResultGamesFragment() {
-        // Required empty public constructor
+        listage = new ArrayList<>();
+        listage.add(new GameInfo("12:12:2012", "Team Liquid", "2:0", "Virtus pro"));
+        listage.add(new GameInfo("12:12:2012", "Team Secret", "1:2", "Virtus pro"));
+        listage.add(new GameInfo("12:12:2012", "Team Serenity", "0:2", "Virtus pro"));
     }
 
     /**
@@ -58,7 +75,16 @@ public class ResultGamesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_result_games, container, false);
+        View v = inflater.inflate(R.layout.fragment_result_games, container, false);
+        recyclerView = v.findViewById(R.id.recycler_roundS);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new AdapterGameInfo(listage);
+        recyclerView.setAdapter(adapter);
+
+
+        return v;
     }
 }
