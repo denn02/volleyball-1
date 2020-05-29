@@ -100,10 +100,10 @@ class Data {
             String newTableMatchQuery = "create table "
                     + TABLE_GAME + " ("
                     + TABLE_ROW_ID + " integer primary key autoincrement not null, "
-                    + DATE + "text,"
+                    + DATE + " text,"
                     + MATCH_ROW_TEAM_FIRST + " text,"
-                    + SCORE + "text,"
-                    + MATCH_ROW_TEAM_SECOND + "text)";
+                    + SCORE + " text,"
+                    + MATCH_ROW_TEAM_SECOND + " text)";
             db.execSQL(newTableMatchQuery);
 
             String newTableRoundQuery = "create table "

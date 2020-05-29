@@ -37,12 +37,11 @@ public class ResultGamesFragment extends Fragment {
     private ArrayList<GameInfo> listage;
     private RecyclerView recyclerView;
     private AdapterGameInfo adapter;
+    private Data data;
 
     public ResultGamesFragment() {
-        listage = new ArrayList<>();
-        listage.add(new GameInfo("12:12:2012", "Team Liquid", "2:0", "Virtus pro"));
-        listage.add(new GameInfo("12:12:2012", "Team Secret", "1:2", "Virtus pro"));
-        listage.add(new GameInfo("12:12:2012", "Team Serenity", "0:2", "Virtus pro"));
+
+
     }
 
     /**
@@ -75,7 +74,10 @@ public class ResultGamesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment_result_games, container, false);
+        data = new Data(v.getContext());
+        listage = data.writeGames();
         recyclerView = v.findViewById(R.id.recycler_roundG);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
