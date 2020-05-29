@@ -184,7 +184,10 @@ class Match extends SurfaceView implements Runnable {
         }
         return true;
     }
-
+    private void onEnd(){
+        Data data = new Data(getContext());
+        data.insertGame(new GameInfo("12:02:2002","Secret team","2:1","Virtus pro"));
+    }
     private void commit() {
         if (leftArea.isSelected()) {
             leftScore++;
@@ -194,6 +197,9 @@ class Match extends SurfaceView implements Runnable {
         leftArea.setSelected(false);
         rightArea.setSelected(false);
         selectedWho = false;
+        if (leftScore == 3 || rightScore == 3){
+            onEnd();
+        }
     }
 
     private void resetBallPosition() {
