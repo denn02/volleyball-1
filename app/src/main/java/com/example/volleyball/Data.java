@@ -40,15 +40,6 @@ class Data {
         contentValues.put(MATCH_ROW_TEAM_FIRST,round.team1);
         contentValues.put(SCORE, round.team2);
         db.insert(TABLE_ROUND,null,contentValues);
-      //  String query = "INSERT INTO " + TABLE_ROUND + "("
-      //          + ROUND_MATCH_ID + ", "
-      //          + TABLE_ROW_FIRST + ", "
-      //          + TABLE_ROW_SECOND +") "
-      //          + "VALUES ("
-      //          + round.matchid
-      //          + round.team1
-      //          + round.team2 + ")";
-     //   db.execSQL(query);
     }
     public void insertGame(GameInfo gameInfo){
         ContentValues contentValues = new ContentValues();
@@ -58,19 +49,11 @@ class Data {
         contentValues.put(MATCH_ROW_TEAM_SECOND,gameInfo.secondTeam);
         db.insert(TABLE_GAME,null,contentValues);
 
-        //   String query = "INSERT INTO " + TABLE_GAME + "("
-     //           + DATE + ", "
-      //          + MATCH_ROW_TEAM_FIRST + ", "
-       //         + SCORE + ", "
-      //          + MATCH_ROW_TEAM_SECOND +") "
-     //           + "VALUES ("
-      //          + gameInfo.date + ","
-     //           + gameInfo.firstTeam + ","
-      //          + gameInfo.score + ","
-      //          + gameInfo.secondTeam + ")";
-     //   db.execSQL(query);
     }
-   public void writeRounds(){
+   public ArrayList<Round> writeRounds(){
+    ArrayList<Round> rounds = new ArrayList<>();
+       Cursor cursor = db.query(TABLE_ROUND, null, null, null, null, null, null);
+       return rounds;
 
    }
    public ArrayList<GameInfo> writeGames(){
