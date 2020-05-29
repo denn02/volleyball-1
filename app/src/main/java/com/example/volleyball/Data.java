@@ -80,12 +80,14 @@ class Data {
         Cursor cursor = db.query(TABLE_GAME, null, null, null, null, null, null);
         ArrayList<GameInfo> gameInfos = new ArrayList<>();
         if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(TABLE_ROW_ID);
             int dateIndex = cursor.getColumnIndex(DATE);
             int team1Index = cursor.getColumnIndex(MATCH_ROW_TEAM_FIRST);
             int scoreIndex = cursor.getColumnIndex(SCORE);
             int team2Index = cursor.getColumnIndex(MATCH_ROW_TEAM_SECOND);
             do {
-                gameInfos.add(new GameInfo(cursor.getString(dateIndex),cursor.getString(team1Index),cursor.getString(scoreIndex),cursor.getString(team2Index)));
+                int id = Integer.parseInt(cursor.getString(idIndex));
+                gameInfos.add(new GameInfo(id, cursor.getString(dateIndex), cursor.getString(team1Index), cursor.getString(scoreIndex), cursor.getString(team2Index)));
             } while (cursor.moveToNext());
         } else {
             Log.d("mLog", "0 rows");

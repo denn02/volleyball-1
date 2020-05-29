@@ -1,11 +1,13 @@
 package com.example.volleyball;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -48,13 +50,25 @@ class AdapterGameInfo extends RecyclerView.Adapter<AdapterGameInfo.ViewHolder> {
         TextView score;
         TextView team2;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             date = itemView.findViewById(R.id.gameinfo_date);
             team1 = itemView.findViewById(R.id.gameinfo_team1);
             score = itemView.findViewById(R.id.gameinfo_score);
             team2 = itemView.findViewById(R.id.gameinfo_team2);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    GameInfo gameInfo = list.get(position);
+
+                    Bundle b = new Bundle();
+                    b.putLong(ResultGameFragment.KEY_MATCH_ID, gameInfo.id);
+                    Navigation.findNavController(itemView).navigate(R.id.gamesToGame, b);
+                }
+            });
         }
     }
 }
