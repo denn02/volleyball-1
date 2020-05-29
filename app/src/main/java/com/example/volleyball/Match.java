@@ -11,6 +11,8 @@ import android.view.SurfaceView;
 import android.view.animation.ScaleAnimation;
 import android.widget.Switch;
 
+import java.util.Stack;
+
 class Match extends SurfaceView implements Runnable {
 
     private Thread thread;
@@ -21,7 +23,7 @@ class Match extends SurfaceView implements Runnable {
     private SurfaceHolder holder;
     private Canvas canvas;
     private Paint paint;
-    private Paint paintArea;
+    private int colorBack = Color.argb(255, 170, 206, 84);
 
     private long fps;
     private final int MS_IN_SECOND = 1000;
@@ -40,6 +42,7 @@ class Match extends SurfaceView implements Runnable {
 
     private int leftScore;
     private int rightScore;
+    private String scoreString = "0 : 0";
     private boolean selectedWho = false;
 
     private Ball ball;
@@ -51,21 +54,23 @@ class Match extends SurfaceView implements Runnable {
     private Button btnCommit;
     Data data;
 
+    private Stack<Round> rounds;
+
     Match(Context context, int width, int height, float density) {
         super(context);
-         data = new Data(context);
+
+        data = new Data(context);
         this.width = width;
         this.height = height;
         screenDensity = density;
-        fontSize = 24 * density;
+        fontSize = 32 * density;
         fontMargin = fontSize;
         blockSize = height / 5;
         
         holder = getHolder();
         paint = new Paint();
-        paintArea = new Paint();
-        paintArea.setStrokeWidth(5 * density);
-        paintArea.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(fontSize);
 
         float halfW = width / 2;
 
@@ -85,6 +90,7 @@ class Match extends SurfaceView implements Runnable {
         RectF rect = new RectF(startButtonX, startButtonY, startButtonX + buttonSize, startButtonY + buttonSize);
         btnCommit = new Button(getContext(), rect);
 
+        rounds = new Stack<>();
 
         startGame();
     }
@@ -123,11 +129,10 @@ class Match extends SurfaceView implements Runnable {
         if(holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
 
-            canvas.drawColor(Color.GRAY);
+            canvas.drawColor(colorBack);
 
-
-            leftArea.draw(canvas, paintArea);
-            rightArea.draw(canvas, paintArea);
+            leftArea.draw(canvas);
+            rightArea.draw(canvas);
 
             if (selectedWho) {
                 ball.draw(canvas, paint);
@@ -137,8 +142,9 @@ class Match extends SurfaceView implements Runnable {
             paint.setTextSize(fontSize);
             canvas.drawText("FPS: " + fps, fontMargin, fontSize + fontMargin, paint);
 
-            canvas.drawText("" + leftScore + " : " + rightScore, fontMargin, fontSize * 2 + fontMargin * 2, paint);
 
+            float scoreWidth = paint.measureText(scoreString);
+            canvas.drawText(scoreString, (width - scoreWidth) / 2, fontSize + fontMargin, paint);
 
 
             holder.unlockCanvasAndPost(canvas);
@@ -165,42 +171,54 @@ class Match extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent event) {
         switch(event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
-                if (btnCommit.getRect().contains(event.getX(), event.getY())) {
+                if (selectedWho && btnCommit.getRect().contains(event.getX(), event.getY())) {
                     commit();
                 } else if (selectedWho) {
                     ball.setPosition(event.getX(), event.getY());
                 } else {
                     if (leftArea.getRect().contains(event.getX(), event.getY())) {
-                        selectedWho = true;
-                        leftArea.setSelected(true);
-                        resetBallPosition();
+                        selectArea(leftArea);
                     } else if (rightArea.getRect().contains(event.getX(), event.getY())) {
-                        selectedWho = true;
-                        rightArea.setSelected(true);
-                        resetBallPosition();
+                        selectArea(rightArea);
                     }
                 }
-
                 break;
         }
         return true;
     }
-    private void onEnd(){
-
+    private void onEnd() {
         data.insertGame(new GameInfo("12:02:2002","Secret team","2:1","Virtus pro"));
     }
+    private void selectArea(Area area) {
+        area.setSelected(true);
+        selectedWho = true;
+        resetBallPosition();
+    }
+
     private void commit() {
-        if (leftArea.isSelected()) {
-            leftScore++;
-        } else {
-            rightScore++;
-        }
+        Round round = new Round(leftArea.isSelected(), rightArea.isSelected(), System.currentTimeMillis());
+        rounds.push(round);
+        updateScores();
         leftArea.setSelected(false);
         rightArea.setSelected(false);
         selectedWho = false;
         if (leftScore == 3 || rightScore == 3){
             onEnd();
         }
+    }
+
+    private void updateScores() {
+        int countLeft = 0;
+        int countRight = 0;
+        for(Round r : rounds) {
+            if (r.team1) {
+                countLeft++;
+            } else {
+                countRight++;
+            }
+        }
+        scoreString = countLeft + " : " + countRight;
+
     }
 
     private void resetBallPosition() {
