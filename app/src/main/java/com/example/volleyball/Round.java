@@ -2,6 +2,7 @@ package com.example.volleyball;
 
 class Round {
     int n;
+    int id;
     long time;
     long match_id;
     boolean team1;
@@ -20,6 +21,11 @@ class Round {
         this.time = ts;
         this.team1 = team1;
         this.team2 = team2;
+    }
+
+    public Round(int id, Boolean team1, Boolean team2, long tsm) {
+        this(team1, team2, tsm);
+        this.id = id;
     }
 
     public void setMatchId(long match_id) {

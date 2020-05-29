@@ -60,16 +60,17 @@ class Data {
 
         Cursor cursor = db.query(TABLE_ROUND, null, "match_id = ?", new String[]{"" + match_id}, null, null, null);
         if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(TABLE_ROW_ID);
             int team1Index = cursor.getColumnIndex(ROUND_TEAM1);
             int team2Index = cursor.getColumnIndex(ROUND_TEAM2);
             int tsmIndex = cursor.getColumnIndex(TABLE_ROW_TSM);
             do {
-
+                int id = Integer.parseInt(cursor.getString(idIndex));
                 Boolean team1 = cursor.getString(team1Index).equals("1");
                 Boolean team2 = cursor.getString(team2Index).equals("1");
                 long tsm = Long.parseLong(cursor.getString(tsmIndex));
 
-                rounds.add(new Round(team1, team2, tsm));
+                rounds.add(new Round(id, team1, team2, tsm));
             } while (cursor.moveToNext());
         }
 
