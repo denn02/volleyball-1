@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -55,6 +57,8 @@ class Match extends SurfaceView implements Runnable {
     Data data;
 
     private Stack<Round> rounds;
+
+    private GameInfo gameInfo;
 
     Match(Context context, int width, int height, float density) {
         super(context);
@@ -186,9 +190,16 @@ class Match extends SurfaceView implements Runnable {
         }
         return true;
     }
+
     private void onEnd() {
-        data.insertGame(new GameInfo("12:02:2002","Secret team","2:1","Virtus pro"));
+        if (gameInfo == null) {
+            return;
+        }
+        gameInfo.setTime(System.currentTimeMillis());
+        long id_match = data.insertGame(gameInfo);
+        Log.d("id_match", id_match + "");
     }
+
     private void selectArea(Area area) {
         area.setSelected(true);
         selectedWho = true;
@@ -202,9 +213,6 @@ class Match extends SurfaceView implements Runnable {
         leftArea.setSelected(false);
         rightArea.setSelected(false);
         selectedWho = false;
-        if (leftScore == 3 || rightScore == 3){
-            onEnd();
-        }
     }
 
     private void updateScores() {
@@ -217,11 +225,19 @@ class Match extends SurfaceView implements Runnable {
                 countRight++;
             }
         }
+
         scoreString = countLeft + " : " + countRight;
+        if (countLeft >= 3 || countRight >= 3){
+            onEnd();
+        }
 
     }
 
     private void resetBallPosition() {
         ball.setPosition(startBallX, startBallY);
+    }
+
+    public void setGameInfo(GameInfo gameInfo) {
+        this.gameInfo = gameInfo;
     }
 }

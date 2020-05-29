@@ -41,38 +41,43 @@ class Data {
         contentValues.put(SCORE, round.team2);
         db.insert(TABLE_ROUND,null,contentValues);
     }
-    public void insertGame(GameInfo gameInfo){
+
+    public long insertGame(GameInfo gameInfo) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DATE,gameInfo.date);
         contentValues.put(MATCH_ROW_TEAM_FIRST,gameInfo.firstTeam);
         contentValues.put(SCORE,gameInfo.score);
         contentValues.put(MATCH_ROW_TEAM_SECOND,gameInfo.secondTeam);
-        db.insert(TABLE_GAME,null,contentValues);
+        return db.insert(TABLE_GAME,null,contentValues);
 
     }
-   public ArrayList<Round> writeRounds(){
-    ArrayList<Round> rounds = new ArrayList<>();
-       Cursor cursor = db.query(TABLE_ROUND, null, null, null, null, null, null);
-       return rounds;
 
-   }
-   public ArrayList<GameInfo> writeGames(){
-       Cursor cursor = db.query(TABLE_GAME, null, null, null, null, null, null);
-       ArrayList<GameInfo> gameInfos = new ArrayList<>();
-       if (cursor.moveToFirst()) {
-           int dateIndex = cursor.getColumnIndex(DATE);
-           int team1Index = cursor.getColumnIndex(MATCH_ROW_TEAM_FIRST);
-           int scoreIndex = cursor.getColumnIndex(SCORE);
-           int team2Index = cursor.getColumnIndex(MATCH_ROW_TEAM_SECOND);
-           do {
-               gameInfos.add(new GameInfo(cursor.getString(dateIndex),cursor.getString(team1Index),cursor.getString(scoreIndex),cursor.getString(team2Index)));
-           } while (cursor.moveToNext());
-       } else
-           Log.d("mLog","0 rows");
+    public ArrayList<Round> writeRounds(){
+        ArrayList<Round> rounds = new ArrayList<>();
+        Cursor cursor = db.query(TABLE_ROUND, null, null, null, null, null, null);
+        return rounds;
 
-       cursor.close();
-       return gameInfos;
-   }
+    }
+
+    public ArrayList<GameInfo> writeGames(){
+        Cursor cursor = db.query(TABLE_GAME, null, null, null, null, null, null);
+        ArrayList<GameInfo> gameInfos = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            int dateIndex = cursor.getColumnIndex(DATE);
+            int team1Index = cursor.getColumnIndex(MATCH_ROW_TEAM_FIRST);
+            int scoreIndex = cursor.getColumnIndex(SCORE);
+            int team2Index = cursor.getColumnIndex(MATCH_ROW_TEAM_SECOND);
+            do {
+                gameInfos.add(new GameInfo(cursor.getString(dateIndex),cursor.getString(team1Index),cursor.getString(scoreIndex),cursor.getString(team2Index)));
+            } while (cursor.moveToNext());
+        } else {
+            Log.d("mLog", "0 rows");
+        }
+
+        cursor.close();
+        return gameInfos;
+    }
+
     private class CustomSQLiteOpenHelper extends SQLiteOpenHelper {
         public CustomSQLiteOpenHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);

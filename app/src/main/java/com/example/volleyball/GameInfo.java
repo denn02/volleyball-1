@@ -5,11 +5,21 @@ public class GameInfo {
      String firstTeam;
      String score;
      String secondTeam;
+     int leftScore;
+     int rightScore;
+     long timeMillis;
+
+
     GameInfo(String date,String firstTeam,String score,String secondTeam){
         this.date = date;
         this.firstTeam = firstTeam;
         this.score = score;
         this.secondTeam = secondTeam;
+    }
+
+    public GameInfo(String team1Name, String team2Name) {
+        this.firstTeam = team1Name;
+        this.secondTeam = team2Name;
     }
 
     public String getDate() {
@@ -26,5 +36,9 @@ public class GameInfo {
 
     public String getSecondTeam() {
         return secondTeam;
+    }
+
+    public void setTime(long timeMillis) {
+        this.timeMillis = timeMillis;
     }
 }
