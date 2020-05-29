@@ -5,11 +5,13 @@ class Round {
     int time;
     boolean team1;
     boolean team2;
+    int matchid;
 
     Round(int n, int ts, boolean team1, boolean team2) {
         this.n = n;
         this.time = ts;
         this.team1 = team1;
         this.team2 = team2;
+        this.matchid = 21421;
     }
 }

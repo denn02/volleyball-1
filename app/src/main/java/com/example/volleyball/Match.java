@@ -49,10 +49,11 @@ class Match extends SurfaceView implements Runnable {
     private float buttonSize;
     private float buttonMargin;
     private Button btnCommit;
+    Data data;
 
     Match(Context context, int width, int height, float density) {
         super(context);
-        
+         data = new Data(context);
         this.width = width;
         this.height = height;
         screenDensity = density;
@@ -184,7 +185,10 @@ class Match extends SurfaceView implements Runnable {
         }
         return true;
     }
+    private void onEnd(){
 
+        data.insertGame(new GameInfo("12:02:2002","Secret team","2:1","Virtus pro"));
+    }
     private void commit() {
         if (leftArea.isSelected()) {
             leftScore++;
@@ -194,6 +198,9 @@ class Match extends SurfaceView implements Runnable {
         leftArea.setSelected(false);
         rightArea.setSelected(false);
         selectedWho = false;
+        if (leftScore == 3 || rightScore == 3){
+            onEnd();
+        }
     }
 
     private void resetBallPosition() {
