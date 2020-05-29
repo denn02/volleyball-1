@@ -3,9 +3,9 @@ package com.example.volleyball;
 class Round {
     int n;
     long time;
+    long match_id;
     boolean team1;
     boolean team2;
-    int matchid = 21421;
     float x;
     float y;
 
@@ -20,5 +20,9 @@ class Round {
         this.time = ts;
         this.team1 = team1;
         this.team2 = team2;
+    }
+
+    public void setMatchId(long match_id) {
+        this.match_id = match_id;
     }
 }

@@ -13,6 +13,8 @@ import android.view.SurfaceView;
 import android.view.animation.ScaleAnimation;
 import android.widget.Switch;
 
+import androidx.navigation.Navigation;
+
 import java.util.Stack;
 
 class Match extends SurfaceView implements Runnable {
@@ -196,8 +198,15 @@ class Match extends SurfaceView implements Runnable {
             return;
         }
         gameInfo.setTime(System.currentTimeMillis());
-        long id_match = data.insertGame(gameInfo);
-        Log.d("id_match", id_match + "");
+        long match_id = data.insertGame(gameInfo);
+        for (Round r : rounds) {
+            r.setMatchId(match_id);
+            data.insertRound(r);
+        }
+
+        Bundle b = new Bundle();
+        b.putLong(ResultGameFragment.KEY_MATCH_ID, match_id);
+        Navigation.findNavController(this).navigate(R.id.matchToGame, b);
     }
 
     private void selectArea(Area area) {

@@ -20,6 +20,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ResultGameFragment extends Fragment {
+    public static final String KEY_MATCH_ID = "match_id";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,11 +36,6 @@ public class ResultGameFragment extends Fragment {
 
     public ResultGameFragment() {
         // Required empty public constructor
-
-        list = new ArrayList<>();
-        list.add(new Round(1, 1590077643, false, true));
-        list.add(new Round(2, 1590077700, true, false));
-        list.add(new Round(3, 1590077750, false, true));
     }
 
     /**
@@ -73,8 +69,11 @@ public class ResultGameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.d("list", "" + list.size());
         View view = inflater.inflate(R.layout.fragment_result_game, container, false);
+
+        Data data = new Data(getContext());
+        long match_id = getArguments().getLong(KEY_MATCH_ID);
+        ArrayList<Round> list = data.getRounds(match_id);
 
         recyclerView = view.findViewById(R.id.recycler_round);
 
