@@ -16,9 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.volleyball.GameFragment;
 import com.example.volleyball.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class MainFragment extends Fragment implements View.OnClickListener {
+
+    TextInputEditText team1;
+    TextInputEditText team2;
 
     private MainViewModel mViewModel;
     public static MainFragment newInstance() {
@@ -32,6 +37,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.main_fragment, container, false);
         Button rsls = v.findViewById(R.id.btnResults);
         Button str = v.findViewById(R.id.btnStart);
+        team1 = v.findViewById(R.id.txtTeam1);
+        team2 = v.findViewById(R.id.txtTeam2);
+
         str.setOnClickListener(this);
         rsls.setOnClickListener(this);
         return v;
@@ -46,21 +54,21 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-/*  any huita,
-*   try to put in GameFragment,
-*   but i don't know how put it in SurfaceView
-*/
-
-//        Intent intent = new Intent(this, GameFragment.newInstance(team1, team2));
-//        intent.putExtra("team1", team1.getText().toString());
-//        intent.putExtra("team2", team2.getText().toString());
-//        startActivity(intent);
         switch (v.getId()) {
             case R.id.btnResults:
                 Navigation.findNavController(v).navigate(R.id.mainToResultGames);
                 break;
             case R.id.btnStart:
-                Navigation.findNavController(v).navigate(R.id.mainToMatch);
+                String team1Name = team1.getText().toString();
+                String team2Name = team2.getText().toString();
+
+                if (team1Name.equals("") || team2Name.equals("")) {
+                    return;
+                }
+                Bundle b = new Bundle();
+                b.putString(GameFragment.KEY_TEAM1, team1Name);
+                b.putString(GameFragment.KEY_TEAM2, team2Name);
+                Navigation.findNavController(v).navigate(R.id.mainToMatch, b);
         }
     }
 }
